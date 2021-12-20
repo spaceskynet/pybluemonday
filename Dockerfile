@@ -10,7 +10,7 @@ FROM python:3.7-alpine as py37
 RUN apk add --update --no-cache go make clang-dev linux-headers gcc g++ libffi-dev git && \
         rm -rf /var/cache/apk/* && \
         rm -rf /root/.cache/
-        WORKDIR /root
+WORKDIR /root
 COPY . /root
 RUN python setup.py bdist_wheel
 
