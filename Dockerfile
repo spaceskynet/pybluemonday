@@ -1,29 +1,39 @@
-FROM python:3.6-slim-buster as py36
-RUN apt-get update && apt-get install -y golang make build-essential libffi-dev git
+FROM python:3.6-alpine as py36
+RUN apk add --update --no-cache golang make build-essential libffi-dev git && \
+        rm -rf /var/cache/apk/* && \
+        rm -rf /root/.cache/
 WORKDIR /root
 COPY . /root
 RUN python setup.py bdist_wheel
 
-FROM python:3.7-slim-buster as py37
-RUN apt-get update && apt-get install -y golang make build-essential libffi-dev git
+FROM python:3.7-alpine as py37
+RUN apk add --update --no-cache golang make build-essential libffi-dev git && \
+        rm -rf /var/cache/apk/* && \
+        rm -rf /root/.cache/
+        WORKDIR /root
+COPY . /root
+RUN python setup.py bdist_wheel
+
+FROM python:3.8-alpine as py38
+RUN apk add --update --no-cache golang make build-essential libffi-dev git && \
+        rm -rf /var/cache/apk/* && \
+        rm -rf /root/.cache/
 WORKDIR /root
 COPY . /root
 RUN python setup.py bdist_wheel
 
-FROM python:3.8-slim-buster as py38
-RUN apt-get update && apt-get install -y golang make build-essential libffi-dev git
+FROM python:3.9-alpine as py39
+RUN apk add --update --no-cache golang make build-essential libffi-dev git && \
+        rm -rf /var/cache/apk/* && \
+        rm -rf /root/.cache/
 WORKDIR /root
 COPY . /root
 RUN python setup.py bdist_wheel
 
-FROM python:3.9-slim-buster as py39
-RUN apt-get update && apt-get install -y golang make build-essential libffi-dev git
-WORKDIR /root
-COPY . /root
-RUN python setup.py bdist_wheel
-
-FROM python:3.10-slim-buster as py310
-RUN apt-get update && apt-get install -y golang make build-essential libffi-dev git
+FROM python:3.10-alpine as py310
+RUN apk add --update --no-cache golang make build-essential libffi-dev git && \
+        rm -rf /var/cache/apk/* && \
+        rm -rf /root/.cache/
 WORKDIR /root
 COPY . /root
 RUN python setup.py bdist_wheel

@@ -14,13 +14,11 @@ before_install:
     sudo echo '{"registry-mirrors": ["https://ghcr.io"]}' >> /etc/docker/daemon.json
   - sudo systemctl restart docker
 script:
-  - cd $HOME && git clone https://github.com/spaceskynet/pybluemonday.git && mkdir dist
-  - cd $HOME/pybluemonday/
+  - cd $HOME && git clone https://github.com/spaceskynet/pybluemonday.git
+  - cd $HOME/pybluemonday
   - sudo docker build . -t=spaceskynet/pybluemonday
-  - |
-    sudo docker run --user root --rm -i -v "$HOME/dist:/root/dist:rw,z" spaceskynet/pybluemonday bash << EOF
-    exit
-    EOF
+  - cd $HOME && sudo docker run --user root --name=whl_source -i spaceskynet/pybluemonday /bin/sh
+  - sudo docker cp whl_source:/root/dist .
 after_success:
   - cd $HOME/dist/
 deploy:
