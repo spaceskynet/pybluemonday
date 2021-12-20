@@ -16,11 +16,13 @@ before_install:
 script:
   - cd $HOME && git clone https://github.com/spaceskynet/pybluemonday.git
   - cd $HOME/pybluemonday
-  - sudo docker build . -t=spaceskynet/pybluemonday
-  - cd $HOME && sudo docker run --user root --name=whl_source -d spaceskynet/pybluemonday ping 127.0.0.1
+  - sudo docker build . -t=spaceskynet/pybluemonday:apline
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin 2>/dev/null
+  - sudo docker push spaceskynet/pybluemonday:apline
+  - cd $HOME && sudo docker run --user root --name=whl_source -d spaceskynet/pybluemonday:apline ping 127.0.0.1
   - sudo docker cp whl_source:/root/dist .
 after_success:
-  - cd $HOME/dist/
+  - cd $HOME/pybluemonday
 deploy:
   provider: releases
   token: $GitOAUTHToken
