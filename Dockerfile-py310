@@ -1,8 +1,6 @@
 FROM python:3.10-alpine as py310
-COPY --from=golang:1.17-alpine /usr/local/go/ /usr/local/go/
-ENV PATH="/usr/local/go/bin:${PATH}"
 RUN sed -e 's/dl-cdn[.]alpinelinux.org/mirrors.aliyun.com/g' -i~ /etc/apk/repositories \
-        && apk add --update --no-cache make python3-dev clang-dev linux-headers gcc g++ libffi-dev git && \
+        && apk add --update --no-cache go make clang-dev linux-headers gcc g++ libffi-dev git && \
         rm -rf /var/cache/apk/* && \
         rm -rf /root/.cache/
 WORKDIR /root
